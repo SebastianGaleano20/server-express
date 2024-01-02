@@ -10,6 +10,13 @@ export const getProducts = () => {
     throw new Error("404 - NOT FOUND");
   }
 };
+export const getProductById = (id) => {
+  try {
+    return products.find((prod) => prod.id === id);
+  } catch (error) {
+    throw new Error("404 - NOT FOUND");
+  }
+};
 
 //Funcion para agregar un nuevo producto
 export const addProduct = (newProduct) => {

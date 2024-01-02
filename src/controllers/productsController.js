@@ -11,6 +11,25 @@ export const getProducts = (req, res) => {
   }
 };
 
+export const getProductById = (req, res) => {
+  try {
+    const { id } = req.params;
+    const productById = productModel.getProductById(id);
+    if (productById) {
+      responseProducts(res, 200, productById);
+    } else {
+      responseProducts(res, 404, {
+        message: "NOT_FOUND",
+      });
+    }
+  } catch (error) {
+    responseProducts(res, 404, {
+      message: "ERROR_TO_GET_DATA",
+      error,
+    });
+  }
+};
+
 export const addProducts = (req, res) => {
   try {
     const newProduct = req.body;

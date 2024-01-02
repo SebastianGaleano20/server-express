@@ -16,8 +16,13 @@ routes.get("/", (req, res) => {
   });
 });
 
-//  http:localhost:3005/api/product -> GET
-routes.get("/product", productsController.getProducts);
+//  http:localhost:2010/api/product -> GET
+routes.get("/api/product", productsController.getProducts);
+
+
+//  http:localhost:2010/api/product:id -> GET
+routes.get("/api/product:id", productsController.getProductById);
+
 
 routes.post(
   "/product",
