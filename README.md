@@ -183,3 +183,107 @@ con routes.get() utilizamos la funcion que tiene como responsabilidad iniciar su
 como primer parametro le indicamos "/" la URL que va a tomar como referencia, como segundo parametro le enviamos una req y res que muestra el contenido. 
 
 Le indicamos el menu principal de nuestra aplicacion que nos da informacion sobre la aplicacion y sus endpoint.
+
+res.status(200).json()
+le indicamos que la response va a tener un status de 200 (caso de exito) y que en formato JSON le mostramos la informacion dentro del array. (El objeto que indica el nombre de la app, su estado y sus endpoints)
+
+## Route configurada
+- Una vez creado todo le indicamos en el archivo index.js que la ruta a utilizar es la creada:
+En index.js importamos la ruta:
+
+import { routes } from "./routes/routes.js";
+
+- utilizamos la ruta:
+
+app.use("/api", routes);
+
+## Ruta de la base de datos
+- Dentro de routes.js
+-routes.get("/product", productsController.getProducts);
+para indicarle a nuestra aplecacion que cuando el usuario nos envie una peticion de tipo GET y la URL sea /product, utilice el controlador getProoducts importado como objeto dentro del archivo.
+
+## Ruta para agregar un nuevo proucto
+- routes.post(
+  "/product",
+  middlewareProductStructure,
+  productsController.addProducts
+);
+le indicamos a la app que cuando el metodo de peticion sea POST y la URL sea "/product", ejecute el archivo middleware y luego el controlador para agregar el producto.
+
+## Creacion del Middleware
+// Definición de un middleware llamado middlewareProductStructure
+export const middlewareProductStructure = (req, res, next) => {
+    // Lista de propiedades requeridas en la estructura del producto
+    const requiredProperties = [
+      "id",
+      "title",
+      "price",
+      "description",
+      "category",
+      "image",
+      "rating",
+    ];
+  
+    // Obtener el objeto de producto desde el cuerpo de la solicitud (request body)
+    const product = req.body; // Se asume que los datos del producto están en el cuerpo de la solicitud
+  
+    // Iterar sobre las propiedades requeridas
+    for (const property of requiredProperties) {
+      // Verificar si el producto tiene la propiedad actual
+      if (!product.hasOwnProperty(property)) {
+        // Si falta alguna propiedad, enviar una respuesta de error y finalizar el middleware
+        return res.status(400).json({ error: `Missing property: ${property}` });
+      }
+    }
+  
+    // Si se han verificado todas las propiedades, continuar con el siguiente middleware o ruta
+    next();
+};
+
+
+Por supuesto, aquí está una explicación línea por línea del código proporcionado:
+
+javascript
+Copy code
+// Definición de un middleware llamado middlewareProductStructure
+export const middlewareProductStructure = (req, res, next) => {
+    // Lista de propiedades requeridas en la estructura del producto
+    const requiredProperties = [
+      "id",
+      "title",
+      "price",
+      "description",
+      "category",
+      "image",
+      "rating",
+    ];
+  
+    // Obtener el objeto de producto desde el cuerpo de la solicitud (request body)
+    const product = req.body; // Se asume que los datos del producto están en el cuerpo de la solicitud
+  
+    // Iterar sobre las propiedades requeridas
+    for (const property of requiredProperties) {
+      // Verificar si el producto tiene la propiedad actual
+      if (!product.hasOwnProperty(property)) {
+        // Si falta alguna propiedad, enviar una respuesta de error y finalizar el middleware
+        return res.status(400).json({ error: `Missing property: ${property}` });
+      }
+    }
+  
+    // Si se han verificado todas las propiedades, continuar con el siguiente middleware o ruta
+    next();
+};
+
+- export const middlewareProductStructure = (req, res, next) => {: Declara y exporta un middleware llamado middlewareProductStructure. Los middlewares en Express son funciones que tienen acceso a los objetos de solicitud (req), respuesta (res), y la siguiente función en la pila de middlewares (next).
+
+- const requiredProperties = [...];: Define un array llamado requiredProperties que contiene las propiedades que se esperan en la estructura del producto.
+
+- const product = req.body;: Obtiene el objeto de producto desde el cuerpo de la solicitud. Se asume que la información del producto está incluida en el cuerpo de la solicitud (req.body).
+
+- for (const property of requiredProperties) {: Inicia un bucle for...of para iterar sobre cada propiedad en requiredProperties.
+
+- if (!product.hasOwnProperty(property)) {: Verifica si el objeto de producto no tiene la propiedad actual.
+
+- return res.status(400).json({ error: Missing property: ${property} });: Si falta alguna propiedad, envía una respuesta de error (código de estado 400) indicando qué propiedad falta y finaliza el middleware. Este método devuelve la respuesta JSON y detiene la ejecución del middleware.
+
+- next();: Si todas las propiedades requeridas están presentes en el objeto de producto, llama a la función next() para pasar al siguiente middleware o ruta en la pila de ejecución.

@@ -1,8 +1,8 @@
 import express from "express";
-import * as productsController from "../controllers/productsControllers.js";
+import * as productsController from "../controllers/productsController.js";
 import { middlewareProductStructure } from "../middlewares/middlewareProductStructure.js";
 
-export const routes = express.Router();
+const routes = express.Router();
 
 routes.get("/", (req, res) => {
   res.status(200).json({
@@ -24,3 +24,5 @@ routes.post(
   middlewareProductStructure,
   productsController.addProducts
 );
+
+export { routes };
