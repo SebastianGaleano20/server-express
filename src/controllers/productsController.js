@@ -1,11 +1,11 @@
 import * as productModel from "../models/productModels.js"
-
-export const getProducts = () =>{
+import {responseProducts} from "../views/productsViews.js"
+export const getProducts = (req,res) =>{
   try {
     const products = productModel.getProducts();
-    return products;
+    responseProducts(res,200,products);
   } catch (error) {
-    
+    responseProducts(res,404,{message: "ERROR_TO_GET_DATA"});
   }
 };
 
