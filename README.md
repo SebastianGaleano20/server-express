@@ -134,3 +134,52 @@ Con try/catch intentamos obtener con productModel.getProducts() lo que retorna d
 - En caso de error, los parametros cambian a statusCode: 404 y data como objeto con un mensaje al usuario.
 
 
+## Controlador add
+- export const addProducts = (req, res) => {
+  try {
+    const newProduct = req.body;
+    newProduct.id = crypto.randomUUID();
+    productModel.addProduct(newProduct);
+    responseProducts(res, 200, {
+      message: "ADDED_PRODUCT_SUCCESFUL",
+    });
+  } catch (error) {
+    responseProducts("ERROR_TO_ADD_PRODUCT");
+  }
+};
+
+con try/catch desde la req capturamos dentro de la variable una propiedad llamada body que es el contenido que nos envia el usuario como data.
+- guardamos en una variable newProduct el contenido y le añadimos un id con randomUUID.
+
+## Routes
+- Creamos el archivo para manejar nuestras routes.
+ routes.js
+## Configuramos el enrutador
+- Importamos express
+import express from "express";
+
+- Importamos los controladores
+import * as productsController from "../controllers/productsControllers.js";
+
+## Creamos la ruta
+- export const routes = express.Router();
+
+con express.Router() creamos nuestro manejador de rutas.
+
+## Creamos la solicitud GET
+- routes.get("/", (req, res) => {
+  res.status(200).json({
+    status: 200,
+    app: "express-server-utn",
+    endpoints: {
+      index: "/",
+      getProducts: "/api/product",
+      addProducts: "/api/product",
+    },
+  });
+});
+
+con routes.get() utilizamos la funcion que tiene como responsabilidad iniciar su funcionalidad cuando el usuario hace una peticion de tipo GET
+como primer parametro le indicamos "/" la URL que va a tomar como referencia, como segundo parametro le enviamos una req y res que muestra el contenido. 
+
+Le indicamos el menu principal de nuestra aplicacion que nos da informacion sobre la aplicacion y sus endpoint.
