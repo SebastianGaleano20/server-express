@@ -1,7 +1,6 @@
 // middlewares/validationMiddleware.js
 export const middlewareProductStructure = (req, res, next) => {
     const requiredProperties = [
-      "id",
       "title",
       "price",
       "description",
