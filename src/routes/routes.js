@@ -17,11 +17,11 @@ routes.get("/", (req, res) => {
 });
 
 //  http:localhost:2010/api/product -> GET
-routes.get("/api/product", productsController.getProducts);
+routes.get("/product", productsController.getProducts);
 
 
 //  http:localhost:2010/api/product:id -> GET
-routes.get("/api/product:id", productsController.getProductById);
+routes.get("/product:id", productsController.getProductById);
 
 
 routes.post(
